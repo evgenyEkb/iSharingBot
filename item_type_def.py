@@ -2,13 +2,20 @@
 
 # по названию вещи ищем id или возвращаем false если такой вещи нет в БД
 def get_item_type_id(cursor_db, item_type_name):
-    # TODO сделать проверку названия вещи с учетом регистра
-    cursor_db.execute('SELECT id FROM item_type WHERE item_type_name = ?', (item_type_name,))
+    item_type_name = item_type_name.strip()
+    item_type_name = item_type_name.lower()
+    cursor_db.execute('SELECT id, item_type_name FROM item_type WHERE '
+                      'item_type_name = ?',
+                      (item_type_name,))
     records = cursor_db.fetchall()
     if records:
         for row in records:
             item_type_id = row[0]
-        return item_type_id
+            item_type_name_db = row[1].strip()
+        if item_type_name == item_type_name_db.lower():
+            return item_type_id
+        else:
+            return False
     else:
         return False
 
