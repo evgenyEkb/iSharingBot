@@ -38,7 +38,6 @@ def get_all_type_category(cursor_db):
     try:
         cursor_db.execute('SELECT id, item_type_name FROM item_type')
         records = cursor_db.fetchall()
-        print(records)
         return records
     except:
         return False

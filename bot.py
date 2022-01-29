@@ -43,8 +43,8 @@ def start_message(message):
             find_item(message)
         elif message.text == '/view_all_category':
             view_all_category(message)
-        elif message.text == '/view_user':
-            view_all_user(message)
+        # elif message.text == '/view_user':
+        #     view_all_user(message)
     else:
         # TODO разобраться с часовыми поясами
         # TODO упростить этот блок
