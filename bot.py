@@ -10,6 +10,8 @@ import item_for_rent_def
 import config
 import find_request_def
 
+# release 1
+
 
 conn = sqlite3.connect(config.db_path, check_same_thread=False)
 cursor = conn.cursor()
