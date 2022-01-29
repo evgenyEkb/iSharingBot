@@ -24,7 +24,7 @@ bot = telebot.TeleBot(config.bot_token)
 # TODO сделать логгироавние действий пользователя
 
 
-@bot.message_handler(commands=['start', 'share', 'find'])
+@bot.message_handler(commands=['start', 'share', 'find', 'view_all_category'])
 def start_message(message):
     user_id = message.chat.id
     if users_def.check_user_registration(cursor, user_id):
@@ -40,6 +40,10 @@ def start_message(message):
             user_state_def.set_current_user_state(conn, cursor, user_id,
                                                   user_state_def.States.S_SELECT_FIND_OPERATING_MODE.value)
             find_item(message)
+        elif message.text == '/view_all_category':
+#             user_state_def.set_current_user_state(conn, cursor, user_id,
+#                                                  user_state_def.States.S_FIND_VIEW_ALL_CATEGORY.value)
+            view_all_category(message)
     else:
         # TODO разобраться с часовыми поясами
         # TODO упростить этот блок
@@ -56,6 +60,21 @@ def start_message(message):
                                               user_state_def.States.S_CHOICE_OPERATING_MODE.value)
         start_sharing_procedure(message)
 
+# @bot.message_handler(func=lambda message: user_state_def.get_current_user_state(cursor, message.chat.id) ==
+#                                           user_state_def.States.S_FIND_VIEW_ALL_CATEGORY.value)
+def view_all_category(message):
+    record = item_type_def.get_all_type_category(cursor)
+    all_category_list = ''
+    for row in record:
+        item_type_id = row[0]
+        item_type_name = row[1]
+        item_type_count = item_for_rent_def.get_count_item_for_rent_by_type(
+            cursor, item_type_id)
+        all_category_list = all_category_list + item_type_name + ' - ' \
+                            + str(item_type_count) + '\n'
+    bot.send_message(message.chat.id, "Список всех существующих категорий:\n"
+                     +all_category_list)
+
 
 @bot.message_handler(func=lambda message: user_state_def.get_current_user_state(cursor, message.chat.id) ==
                                           user_state_def.States.S_CHOICE_OPERATING_MODE.value)
@@ -68,6 +87,10 @@ def start_sharing_procedure(message):
     key_find = types.InlineKeyboardButton(text='Найти вещь в пользование.',
                                           callback_data='find')
     keyboard.add(key_find)
+    key_view_all_category = types.InlineKeyboardButton(text='Посмотреть все '
+                                                            'категории',
+                                          callback_data='view_all_category')
+    keyboard.add(key_view_all_category)
     bot.send_message(message.chat.id, "Что вы хотите сделать?",
                      reply_markup=keyboard)
 
@@ -199,6 +222,8 @@ def callback_worker(call):
         share_item(call.message)
     elif call.data == "find":
         find_item(call.message)
+    elif call.data == "view_all_category":
+        view_all_category(call.message)
 
 
 bot.infinity_polling()

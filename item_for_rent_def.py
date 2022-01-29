@@ -72,3 +72,16 @@ def tmp_del_item_for_rent(connection, cursor_db, item_owner_id):
         pass
     finally:
         pass
+
+
+def get_count_item_for_rent_by_type(cursor_db, item_type_id):
+    try:
+        cursor_db.execute('SELECT count(*) FROM item_for_rent WHERE '
+                          'item_type_id= ?',
+                          (item_type_id,))
+        records = cursor_db.fetchone()
+        return records[0]
+    except:
+        return 0
+    finally:
+        pass

@@ -12,6 +12,7 @@ class States(Enum):
     S_FIND_ENTER_ITEM_TYPE = 8
     S_FIND_PRINT_ITEM_LIST = 9
     S_FIND_SEND_MESSAGE_ITEM_OWNER = 10
+#   S_FIND_VIEW_ALL_CATEGORY = 11
 
 
 # Пытаемся узнать из базы «состояние» пользователя
