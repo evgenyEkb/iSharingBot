@@ -24,7 +24,8 @@ bot = telebot.TeleBot(config.bot_token)
 # TODO сделать логгироавние действий пользователя
 
 
-@bot.message_handler(commands=['start', 'share', 'find', 'view_all_category'])
+@bot.message_handler(commands=['start', 'share', 'find', 'view_all_category',
+                               'view_user'])
 def start_message(message):
     user_id = message.chat.id
     if users_def.check_user_registration(cursor, user_id):
@@ -41,9 +42,9 @@ def start_message(message):
                                                   user_state_def.States.S_SELECT_FIND_OPERATING_MODE.value)
             find_item(message)
         elif message.text == '/view_all_category':
-#             user_state_def.set_current_user_state(conn, cursor, user_id,
-#                                                  user_state_def.States.S_FIND_VIEW_ALL_CATEGORY.value)
             view_all_category(message)
+        elif message.text == '/view_user':
+            view_all_user(message)
     else:
         # TODO разобраться с часовыми поясами
         # TODO упростить этот блок
@@ -60,8 +61,12 @@ def start_message(message):
                                               user_state_def.States.S_CHOICE_OPERATING_MODE.value)
         start_sharing_procedure(message)
 
-# @bot.message_handler(func=lambda message: user_state_def.get_current_user_state(cursor, message.chat.id) ==
-#                                           user_state_def.States.S_FIND_VIEW_ALL_CATEGORY.value)
+def view_all_user(message):
+    cursor.execute('SELECT * FROM users ')
+    records = cursor.fetchall()
+    for row in records:
+        bot.send_message(message.chat.id, row[3])
+
 def view_all_category(message):
     record = item_type_def.get_all_type_category(cursor)
     all_category_list = ''
