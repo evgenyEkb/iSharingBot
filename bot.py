@@ -258,4 +258,3 @@ def callback_worker(call):
 
 
 bot.infinity_polling()
-# bot.polling()
