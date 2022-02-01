@@ -212,7 +212,7 @@ def print_item_for_rent_list(message):
     item_type_name = message.text
     # TODO item_type_id находить по type_name внутри
     #  item_for_rent_def.search_item_for_rent
-    item_type_id = item_type_def.check_item_type(conn, cursor, item_type_name)
+    item_type_id = item_type_def.get_item_type_id(cursor, item_type_name)
     records = item_for_rent_def.search_item_for_rent(cursor, item_type_id)
     if records:
         request_result_id = 0
