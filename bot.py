@@ -251,10 +251,10 @@ def callback_worker(call):
         find_item(call.message)
     elif call.data == "view_all_category":
         view_all_category(call.message)
-    elif call.data == "admin_self":
-        admin_self(call.message)
-    elif call.data == "admin_item_list":
-        admin_item_list(call.message)
+    # elif call.data == "admin_self":
+    #     admin_self(call.message)
+    # elif call.data == "admin_item_list":
+    #     admin_item_list(call.message)
 
 
 bot.infinity_polling()
