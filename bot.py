@@ -9,6 +9,7 @@ import item_type_def
 import item_for_rent_def
 import config
 import find_request_def
+import admin_def
 
 
 conn = sqlite3.connect(config.db_path, check_same_thread=False)
@@ -25,7 +26,7 @@ bot = telebot.TeleBot(config.bot_token)
 
 
 @bot.message_handler(commands=['start', 'share', 'find', 'view_all_category',
-                               'view_user'])
+                               'view_user', 'admin_self', 'admin_item_list'])
 def start_message(message):
     user_id = message.chat.id
     if users_def.check_user_registration(cursor, user_id):
@@ -43,8 +44,12 @@ def start_message(message):
             find_item(message)
         elif message.text == '/view_all_category':
             view_all_category(message)
-        # elif message.text == '/view_user':
-        #     view_all_user(message)
+        elif message.text == '/view_user':
+            view_all_user(message)
+        elif message.text == '/admin_self':
+            admin_self(message)
+        elif message.text == '/admin_item_list':
+            admin_item_list(message)
     else:
         # TODO разобраться с часовыми поясами
         # TODO упростить этот блок
@@ -60,6 +65,15 @@ def start_message(message):
         user_state_def.set_current_user_state(conn, cursor, user_id,
                                               user_state_def.States.S_CHOICE_OPERATING_MODE.value)
         start_sharing_procedure(message)
+
+
+def admin_self(message):
+    pass
+
+
+def admin_item_list(message):
+    pass
+
 
 def view_all_user(message):
     cursor.execute('SELECT * FROM users ')
@@ -96,6 +110,14 @@ def start_sharing_procedure(message):
                                                             'категории',
                                           callback_data='view_all_category')
     keyboard.add(key_view_all_category)
+    key_admin_self = types.InlineKeyboardButton(text='Редактировать личные  '
+                                                     'данные',
+                                                callback_data='admin_self')
+    keyboard.add(key_admin_self)
+    key_admin_item_list = types.InlineKeyboardButton(text='Редактировать '
+                                                          'список своих вещей',
+                                                callback_data='admin_admin_item_list')
+    keyboard.add(key_admin_item_list)
     bot.send_message(message.chat.id, "Что вы хотите сделать?",
                      reply_markup=keyboard)
 
@@ -229,6 +251,10 @@ def callback_worker(call):
         find_item(call.message)
     elif call.data == "view_all_category":
         view_all_category(call.message)
+    elif call.data == "admin_self":
+        admin_self(call.message)
+    elif call.data == "admin_item_list":
+        admin_item_list(call.message)
 
 
 bot.infinity_polling()
