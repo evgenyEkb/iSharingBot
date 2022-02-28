@@ -1,4 +1,5 @@
-# В данном модуле собраны функции, связанные с регистрацией, проверкой, валидацией и получением данных о пользователе
+# В данном модуле собраны функции, связанные с регистрацией, проверкой,
+# валидацией и получением данных о пользователе
 
 # user - список с данными пользователя, index:
 # 0 - user_id
@@ -8,15 +9,17 @@
 # 4 - user_date_registration
 
 def check_user_registration(cursor_db, user_id):
-    info = cursor_db.execute('SELECT * FROM users WHERE user_id=?', (user_id,))
-    if info.fetchone():
+    cursor_db.execute("SELECT * FROM users WHERE user_id=%s", (user_id,))
+    info = cursor_db.fetchone()
+    if info:
         return True
     else:
         return False
 
 
 def check_user_data(user_id, user_first_name, user_last_name, user_data, user_date_registration):
-    # TODO в дальнейшем нужно так же проверять строки с пробелами и опмечать их как пустые или us_name = us_id
+    # TODO в дальнейшем нужно так же проверять строки с пробелами и опмечать
+    #  их как пустые или us_name = us_id
     if not user_first_name:
         user_first_name = "-"
     if not user_last_name:
@@ -29,9 +32,8 @@ def check_user_data(user_id, user_first_name, user_last_name, user_data, user_da
 
 def get_user_data_from_db(cursor_db, user, user_id):
     if not user:
-        cursor_db.execute(
-                'SELECT user_first_name, user_last_name, user_data, user_date_registration, user_address FROM users \
-                WHERE user_id = ?', (user_id,))
+        cursor_db.execute('SELECT user_first_name, user_last_name, user_data, user_date_registration, '
+                          'user_address FROM users WHERE user_id = %s', (user_id,))
         records = cursor_db.fetchall()
         for row in records:
             user = [user_id, row[0], row[1], row[2], row[3]]
@@ -40,8 +42,8 @@ def get_user_data_from_db(cursor_db, user, user_id):
         if user[0] == user_id:
             return user
         else:
-            cursor_db.execute('SELECT user_first_name, user_last_name, user_data, user_date_registration, \
-                               user_address FROM users WHERE user_id = ?', (user_id,))
+            cursor_db.execute('SELECT user_first_name, user_last_name, user_data, user_date_registration, '
+                              'user_address FROM users WHERE user_id = %s', (user_id,))
             records = cursor_db.fetchall()
             for row in records:
                 user = [user_id, row[0], row[1], row[2], row[3]]
@@ -50,7 +52,26 @@ def get_user_data_from_db(cursor_db, user, user_id):
 
 def registration_user_in_db(connection, cursor_db, user_id, user_first_name, user_last_name, user_data,
                             user_date_registration, user_cities_id, user_address):
-    cursor_db.execute('INSERT INTO users (user_id, user_first_name, user_last_name, user_data, user_date_registration, \
-    user_cities_id, user_address) VALUES (?,?,?,?,?,?,?)', (user_id, user_first_name, user_last_name, user_data,
-                                                            user_date_registration, user_cities_id, user_address))
+    cursor_db.execute('INSERT INTO users (user_id, user_first_name, user_last_name, user_data, '
+                      'user_date_registration, user_cities_id, user_address)  VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                      (user_id, user_first_name, user_last_name, user_data, user_date_registration,
+                       user_cities_id, user_address))
     connection.commit()
+
+
+def get_user_address(cursor_db, user_id):
+    try:
+        cursor_db.execute('SELECT user_address FROM users WHERE user_id = %s', (user_id,))
+        records = cursor_db.fetchone()
+        return records[0]
+    except:
+        return False
+
+
+def set_user_address(connection, cursor_db, user_id, user_address):
+    try:
+        cursor_db.execute('UPDATE users SET user_address=%s WHERE user_id=%s', (user_address, user_id))
+        connection.commit()
+        return True
+    except:
+        return False
