@@ -17,9 +17,17 @@ import queue_messages_def
 # import asyncio
 import time
 
+# conn = psycopg2.connect(user="postgres",
+#                         password="/k0jrWg8M45(pPga",
+#                         host="127.0.0.1",
+#                         port="5432",
+#                         database="iSharingBot")
 
-conn = psycopg2.connect(user="postgres", password="/k0jrWg8M45(pPga", host="127.0.0.1",
-                        port="5432", database="iSharingBot")
+conn = psycopg2.connect(user="kqskgmetomlhqi",
+                        password="6306e485b8b93bcb42b634533c251a014ec232ddba546e3a6ae69d6190f05c61",
+                        host="ec2-54-195-76-73.eu-west-1.compute.amazonaws.com",
+                        port="5432",
+                        database="dd4veg9ahhdfcg")
 cursor = conn.cursor()
 
 
