@@ -23,11 +23,21 @@ import time
 #                         port="5432",
 #                         database="iSharingBot")
 
-conn = psycopg2.connect(user="kqskgmetomlhqi",
-                        password="6306e485b8b93bcb42b634533c251a014ec232ddba546e3a6ae69d6190f05c61",
-                        host="ec2-54-195-76-73.eu-west-1.compute.amazonaws.com",
+
+# conn = psycopg2.connect(user="kqskgmetomlhqi",
+#                         password="6306e485b8b93bcb42b634533c251a014ec232ddba546e3a6ae69d6190f05c61",
+#                         host="ec2-54-195-76-73.eu-west-1.compute.amazonaws.com",
+#                         port="5432",
+#                         database="dd4veg9ahhdfcg",
+#                         sslmode="require")
+
+conn = psycopg2.connect(user="philxcnzuwsrwv",
+                        password="71c465add35bf334e5a2d8bbf64c0f5aedc3efc21386961d893489fece61e856",
+                        host="ec2-52-209-111-18.eu-west-1.compute.amazonaws.com",
                         port="5432",
-                        database="dd4veg9ahhdfcg")
+                        database="d4gq9un80vefdk",
+                        sslmode="require")
+
 cursor = conn.cursor()
 
 
