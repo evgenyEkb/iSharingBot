@@ -1,5 +1,6 @@
 # TODO сделать логгирование действий пользователя
 
+
 import psycopg2
 import telebot
 from telebot import types
@@ -16,6 +17,7 @@ import io
 import queue_messages_def
 # import asyncio
 import time
+import os
 
 # conn = psycopg2.connect(user="postgres",
 #                         password="/k0jrWg8M45(pPga",
@@ -23,7 +25,7 @@ import time
 #                         port="5432",
 #                         database="iSharingBot")
 
-
+# TODO изменить коннект к БД на Heroku через URI
 # conn = psycopg2.connect(user="kqskgmetomlhqi",
 #                         password="6306e485b8b93bcb42b634533c251a014ec232ddba546e3a6ae69d6190f05c61",
 #                         host="ec2-54-195-76-73.eu-west-1.compute.amazonaws.com",
@@ -31,12 +33,15 @@ import time
 #                         database="dd4veg9ahhdfcg",
 #                         sslmode="require")
 
-conn = psycopg2.connect(user="philxcnzuwsrwv",
-                        password="71c465add35bf334e5a2d8bbf64c0f5aedc3efc21386961d893489fece61e856",
-                        host="ec2-52-209-111-18.eu-west-1.compute.amazonaws.com",
-                        port="5432",
-                        database="d4gq9un80vefdk",
-                        sslmode="require")
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+# conn = psycopg2.connect(user="philxcnzuwsrwv",
+#                         password="71c465add35bf334e5a2d8bbf64c0f5aedc3efc21386961d893489fece61e856",
+#                         host="ec2-52-209-111-18.eu-west-1.compute.amazonaws.com",
+#                         port="5432",
+#                         database="d4gq9un80vefdk",
+#                         sslmode="require")
 
 cursor = conn.cursor()
 
