@@ -25,7 +25,6 @@ import os
 #                         port="5432",
 #                         database="iSharingBot")
 
-# TODO изменить коннект к БД на Heroku через URI
 # conn = psycopg2.connect(user="kqskgmetomlhqi",
 #                         password="6306e485b8b93bcb42b634533c251a014ec232ddba546e3a6ae69d6190f05c61",
 #                         host="ec2-54-195-76-73.eu-west-1.compute.amazonaws.com",
@@ -45,8 +44,10 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 cursor = conn.cursor()
 
+TOKEN = os.environ['TOKEN']
+bot = telebot.TeleBot(TOKEN)
 
-bot = telebot.TeleBot(config.bot_token)
+# bot = telebot.TeleBot(config.bot_token)
 
 
 def del_not_actual_notification(user_id):
